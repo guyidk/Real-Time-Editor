@@ -5,9 +5,11 @@ import { useEffect, useState } from 'react';
 export default function Home() {
   const [text, setText] = useState('');
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   // Load text from backend on page load
   useEffect(() => {
-    fetch('http://localhost:5000/text')
+    fetch(`${API_URL}/text`)
       .then(res => res.json())
       .then(data => setText(data.content || ''));
   }, []);
@@ -17,7 +19,7 @@ export default function Home() {
     const newText = e.target.value;
     setText(newText);
 
-    await fetch('http://localhost:5000/text', {
+    await fetch(`${API_URL}/text`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: newText }),
